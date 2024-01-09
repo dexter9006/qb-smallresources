@@ -65,6 +65,10 @@ local recoils = {
     [`weapon_gusenberg`] = 0.1,
     [`weapon_combatmg_mk2`] = 0.1,
 
+    -- Vitto
+    [GetHashKey("weapon_beanbagshotgun")] = 0.0,    --['weapon_beanbagshotgun']
+    --
+    
     -- Sniper Rifles
     [`weapon_sniperrifle`] = 0.5,
     [`weapon_heavysniper`] = 0.7,
