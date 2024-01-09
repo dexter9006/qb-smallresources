@@ -1,7 +1,7 @@
 Config = {}
 
 Config.UseTarget = GetConvar('UseTarget', 'false') == 'true' -- Use qb-target interactions (don't change this, go to your server.cfg and add `setr UseTarget true` to use this and just that from true to false or the other way around)
-Config.PauseMapText = ''                                     -- Text shown above the map when ESC is pressed. If left empty 'FiveM' will appear
+Config.PauseMapText = '~g~Pain~s~ | ~y~City ~w~RP'         -- Text shown above the map when ESC is pressed. If left empty 'FiveM' will appear
 Config.HarnessUses = 20
 Config.DamageNeeded = 100.0                                  -- amount of damage till you can push your vehicle. 0-1000
 
@@ -11,7 +11,7 @@ Config.AFK = {
         ['admin'] = true,
         ['god'] = true
     },
-    secondsUntilKick = 1000000, -- AFK Kick Time Limit (in seconds)
+    secondsUntilKick = 2700, -- AFK Kick Time Limit (in seconds)
     kickInCharMenu = false      -- Set to true if you want to kick players for being AFK even when they are in the character menu.
 }
 
@@ -91,20 +91,53 @@ Config.Disable = {
 
 Config.Consumables = {
     eat = { -- default food items
-        ['sandwich'] = math.random(35, 54),
-        ['tosti'] = math.random(40, 50),
-        ['twerks_candy'] = math.random(35, 54),
-        ['snikkel_candy'] = math.random(40, 50)
-    },
+        ["twerks_candy"] = math.random(15, 34),
+        ["snikkel_candy"] = math.random(15, 34),
+        ["sandwich"] = math.random(25, 44),
+        ["tosti"] = math.random(25, 44),
+
+        -- Burgershot
+	    ["burger-bleeder"] = math.random(35, 54),
+	    ["burger-moneyshot"] = math.random(35, 54),
+	    ["burger-torpedo"] = math.random(35, 54),
+	    ["burger-heartstopper"] = math.random(35, 54),
+	    ["burger-meatfree"] = math.random(35, 54),
+	    ["burger-fries"] = math.random(35, 54),
+
+        -- Simple-farming
+        ["apple"] = math.random(10, 20),
+        ["beef"] = math.random(35, 54),
+        ["slicedpie"] = math.random(10, 20),
+        ["corncob"] = math.random(25, 40),
+        ["canofcorn"] = math.random(35, 54),
+        ["grapes"] = math.random(10, 20),
+        ["greenpepper"] = math.random(10, 20),
+        ["chillypepper"] = math.random(10, 20),
+        ["tomato"] = math.random(10, 20),
+        ["tomatopaste"] = math.random(25, 40),
+        ["cooked_bacon"] = math.random(35, 54),
+        ["cooked_sausage"] = math.random(35, 54),
+        ["cooked_pork"] = math.random(35, 54),
+        ["cooked_ham"] = math.random(35, 54),
+        },
     drink = { -- default drink items
-        ['water_bottle'] = math.random(35, 54),
-        ['kurkakola'] = math.random(35, 54),
-        ['coffee'] = math.random(40, 50)
+        ["water_bottle"] = math.random(15, 34),
+        ["kurkakola"] = math.random(25, 44),
+        ["coffee"] = math.random(25, 44),
+    
+        -- Burgershot
+    	["burger-softdrink"] = math.random(35, 54),
+    	["burger-mshake"] = math.random(35, 54),
+    
+        -- Simple-farming
+        ["apple_juice"] = math.random(25, 45),
+        ["grapejuice"] = math.random(25, 45),
+        ["hotsauce"] = math.random(10, 15),
     },
     alcohol = { -- default alcohol items
-        ['whiskey'] = math.random(20, 30),
-        ['beer'] = math.random(30, 40),
-        ['vodka'] = math.random(20, 40),
+        ["beer"] = math.random(15, 25),
+        ["whiskey"] = math.random(25, 30),
+        ["vodka"] = math.random(30, 40),
     },
     custom = { -- put any custom items here
         -- ['newitem'] = {
@@ -162,26 +195,29 @@ Config.BlacklistedScenarios = {
 }
 
 Config.BlacklistedVehs = {
-    [`shamal`] = true,
-    [`luxor`] = true,
-    [`luxor2`] = true,
+    --[`shamal`] = true,
+    --[`luxor`] = true,
+    --[`luxor2`] = true,
     [`jet`] = true,
     [`lazer`] = true,
     [`buzzard`] = true,
-    [`buzzard2`] = true,
+    --[`buzzard2`] = true,
     [`annihilator`] = true,
+    [`annihilator2`] = true,
     [`savage`] = true,
     [`titan`] = true,
     [`rhino`] = true,
     [`firetruck`] = true,
-    [`mule`] = true,
-    [`maverick`] = true,
+    --[`mule`] = true,
+    --[`maverick`] = true,
     [`blimp`] = true,
     [`airtug`] = true,
-    [`camper`] = true,
+    --[`camper`] = true,
     [`hydra`] = true,
     [`oppressor`] = true,
+    [`technical2`] = true,
     [`technical3`] = true,
+    [`insurgent`] = true,
     [`insurgent3`] = true,
     [`apc`] = true,
     [`tampa3`] = true,
@@ -208,7 +244,20 @@ Config.BlacklistedVehs = {
     [`ruiner2`] = true,
     [`deluxo`] = true,
     [`cargoplane2`] = true,
-    [`voltic2`] = true
+    [`voltic2`] = true,
+    [`vindicator`] = true,
+    [`BESRA`] = true,
+    [`stromberg`] = true,
+    [`Toreador`] = true,
+    [`Kosatka`] = true,
+    [`alkonost`] = true,
+    [`chernobog`] = true,
+    [`minitank`] = true,
+    [`bombushka`] = true,
+    [`volatol`] = true,
+    [`tuga`] = true,
+    --[`patrolboat`] = true,
+    [`valkyrie`] = true,
 }
 
 Config.BlacklistedWeapons = {
@@ -227,7 +276,7 @@ Config.BlacklistedPeds = {
 Config.WeapDraw = {
     variants = { 130, 122, 3, 6, 8 },
     weapons = {
-        --'WEAPON_STUNGUN',
+        'WEAPON_STUNGUN',
         'WEAPON_PISTOL',
         'WEAPON_PISTOL_MK2',
         'WEAPON_COMBATPISTOL',
@@ -241,8 +290,11 @@ Config.WeapDraw = {
 }
 
 Config.Objects = { -- for object removal
-    { coords = vector3(266.09, -349.35, 44.74), heading = 0, length = 200, width = 200, model = 'prop_sec_barier_02b' },
-    { coords = vector3(285.28, -355.78, 45.13), heading = 0, length = 200, width = 200, model = 'prop_sec_barier_02a' },
+    {coords = vector3(266.1, -348.64, 43.73), heading = 0, length = 200, width = 200, model = "prop_sec_barier_02b"},   -- parking Occupation Avenue
+    {coords = vector3(285.72, -356.07, 44.14), heading = 0, length = 200, width = 200, model = "prop_sec_barier_02a"},  -- parking Occupation Avenue
+    --
+    {coords = vector3(230.92, -816.15, 30.17), heading = 0, length = 200, width = 200, model = "prop_sec_barrier_ld_01a"},  -- parking place des cubes
+    {coords = vector3(206.53, -803.48, 30.95), heading = 0, length = 200, width = 200, model = "prop_sec_barrier_ld_01a"},  -- parking place des cubes
 }
 
 -- You may add more than 2 selections and it will bring up a menu for the player to select which floor be sure to label each section though
@@ -264,12 +316,12 @@ Config.Teleports = {
         [1] = {
             poly = { coords = vector3(909.49, -1589.22, 30.51), heading = 92.24, length = 2, width = 2 },
             allowVeh = false,
-            label = '[E] Enter Coke Processing'
+            label = '[E] Entrer au Labo de Coke'
         },
         [2] = {
             poly = { coords = vector3(1088.81, -3187.57, -38.99), heading = 181.7, length = 2, width = 2 },
             allowVeh = false,
-            label = '[E] Leave'
+            label = '[E] Sortir'
         }
     }
 }
