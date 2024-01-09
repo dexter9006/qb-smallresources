@@ -85,141 +85,157 @@ exports("HasHarness", hasHarness)
 
 -- Ejection Logic
 
-RegisterNetEvent('QBCore:Client:EnteredVehicle', function()
-    local ped = PlayerPedId()
-    while IsPedInAnyVehicle(ped, false) do
-        Wait(0)
-        local currVehicle = GetVehiclePedIsIn(ped, false)
-        if currVehicle and currVehicle ~= false and currVehicle ~= 0 then
-            SetPedHelmet(ped, false)
-            lastVeh = GetVehiclePedIsIn(ped, false)
-            if GetVehicleEngineHealth(currVehicle) < 0.0 then
-                SetVehicleEngineHealth(currVehicle, 0.0)
-            end
-            if (GetVehicleHandbrake(currVehicle) or (GetVehicleSteeringAngle(currVehicle)) > 25.0 or (GetVehicleSteeringAngle(currVehicle)) < -25.0) then
-                if handbrake == 0 then
-                    handbrake = 100
-                    resetHandBrake()
-                else
-                    handbrake = 100
-                end
-            end
+Citizen.CreateThread(function()
+	local bool = false
+	while true do
+		Citizen.Wait(0)					-- mandatory wait
+		local ped = GetPlayerPed(-1)	-- get local ped
 
-            thisFrameVehSpeed = GetEntitySpeed(currVehicle) * 3.6
-            currVehBodyHealth = GetVehicleBodyHealth(currVehicle)
-            if currVehBodyHealth == 1000 and frameBodyChange ~= 0 then
-                frameBodyChange = 0
-            end
-            if frameBodyChange ~= 0 then
-                if lastFrameVehSpeed > 110 and thisFrameVehSpeed < (lastFrameVehSpeed * 0.75) and not damageDone then
-                    if frameBodyChange > 18.0 then
-                        if not seatbeltOn and not IsThisModelABike(currVehicle) then
-                            if math.random(math.ceil(lastFrameVehSpeed)) > 60 then
-                                if not harnessOn then
-                                    ejectFromVehicle()
-                                else
-                                    harnessHp -= 1
-                                    TriggerServerEvent('seatbelt:DoHarnessDamage', harnessHp, harnessData)
-                                end
+		if IsPedInAnyVehicle(ped, false) then
+			local veh = GetVehiclePedIsIn(ped, false)
+			if bool == false then
+				bool = true
+
+                local playerPed = PlayerPedId()
+                while IsPedInAnyVehicle(playerPed, false) do
+                    Wait(0)
+                    local currentVehicle = GetVehiclePedIsIn(playerPed, false)
+                    if currentVehicle and currentVehicle ~= false and currentVehicle ~= 0 then
+                        SetPedHelmet(playerPed, false)
+                        lastVehicle = GetVehiclePedIsIn(playerPed, false)
+                        if GetVehicleEngineHealth(currentVehicle) < 0.0 then
+                            SetVehicleEngineHealth(currentVehicle, 0.0)
+                        end
+                        if (GetVehicleHandbrake(currentVehicle) or (GetVehicleSteeringAngle(currentVehicle)) > 25.0 or (GetVehicleSteeringAngle(currentVehicle)) < -25.0) then
+                            if handbrake == 0 then
+                                handbrake = 100
+                                ResetHandBrake()
+                            else
+                                handbrake = 100
                             end
-                        elseif (seatbeltOn or harnessOn) and not IsThisModelABike(currVehicle) then
-                            if lastFrameVehSpeed > 150 then
-                                if math.random(math.ceil(lastFrameVehSpeed)) > 150 then
-                                    if not harnessOn then
-                                        ejectFromVehicle()
-                                    else
-                                        harnessHp -= 1
-                                        TriggerServerEvent('seatbelt:DoHarnessDamage', harnessHp, harnessData)
+
+                             end
+
+                        thisFrameVehicleSpeed = GetEntitySpeed(currentVehicle) * 3.6
+                        currentvehicleBodyHealth = GetVehicleBodyHealth(currentVehicle)
+                        if currentvehicleBodyHealth == 1000 and frameBodyChange ~= 0 then
+                            frameBodyChange = 0
+                        end
+                        if frameBodyChange ~= 0 then
+                            if lastFrameVehiclespeed > 110 and thisFrameVehicleSpeed < (lastFrameVehiclespeed * 0.75) and not damagedone then
+                                if frameBodyChange > 18.0 then
+                                    if not seatbeltOn and not IsThisModelABike(currentVehicle) then
+                                        if math.random(math.ceil(lastFrameVehiclespeed)) > 60 then
+                                            if not harnessOn then
+                                                EjectFromVehicle()
+                                            else
+                                                harnessHp -= 1
+                                                TriggerServerEvent('seatbelt:DoHarnessDamage', harnessHp, harnessData)
+                                            end
+                                        end
+                                    elseif (seatbeltOn or harnessOn) and not IsThisModelABike(currentVehicle) then
+                                        if lastFrameVehiclespeed > 150 then
+                                            if math.random(math.ceil(lastFrameVehiclespeed)) > 150 then
+                                                if not harnessOn then
+                                                    EjectFromVehicle()
+                                                else
+                                                    harnessHp -= 1
+                                                    TriggerServerEvent('seatbelt:DoHarnessDamage', harnessHp, harnessData)
+                                                end
+                                            end
+                                        end
+                                    end
+                                else
+                                    if not seatbeltOn and not IsThisModelABike(currentVehicle) then
+                                        if math.random(math.ceil(lastFrameVehiclespeed)) > 60 then
+                                            if not harnessOn then
+                                                EjectFromVehicle()
+                                            else
+                                                harnessHp -= 1
+                                                TriggerServerEvent('seatbelt:DoHarnessDamage', harnessHp, harnessData)
+                                            end
+                                        end
+                                    elseif (seatbeltOn or harnessOn) and not IsThisModelABike(currentVehicle) then
+                                        if lastFrameVehiclespeed > 120 then
+                                            if math.random(math.ceil(lastFrameVehiclespeed)) > 200 then
+                                                if not harnessOn then
+                                                    EjectFromVehicle()
+                                                else
+                                                    harnessHp -= 1
+                                                    TriggerServerEvent('seatbelt:DoHarnessDamage', harnessHp, harnessData)
+                                                end
+                                            end
+                                        end
                                     end
                                 end
+                                damagedone = true
+                                SetVehicleEngineOn(currentVehicle, false, true, true)
+                            end
+                            if currentvehicleBodyHealth < 350.0 and not damagedone then
+                                damagedone = true
+                                SetVehicleEngineOn(currentVehicle, false, true, true)
+                                Wait(1000)
                             end
                         end
+                            if lastFrameVehiclespeed < 100 then
+                            Wait(100)
+                            tick = 0
+                        end
+                        frameBodyChange = newvehicleBodyHealth - currentvehicleBodyHealth
+                        if tick > 0 then
+                            tick -= 1
+                            if tick == 1 then
+                                lastFrameVehiclespeed = GetEntitySpeed(currentVehicle) * 3.6
+                        else
+                            if damagedone then
+                                damagedone = false
+                                frameBodyChange = 0
+                                lastFrameVehiclespeed = GetEntitySpeed(currentVehicle) * 3.6
+                            end
+                            lastFrameVehiclespeed2 = GetEntitySpeed(currentVehicle) * 3.6
+                            if lastFrameVehiclespeed2 > lastFrameVehiclespeed then
+                                lastFrameVehiclespeed = GetEntitySpeed(currentVehicle) * 3.6
+                            end
+                            if lastFrameVehiclespeed2 < lastFrameVehiclespeed then
+                                tick = 25
+                            end
+
+                        end
+                        if tick < 0 then
+                            tick = 0
+                        end
+                        newvehicleBodyHealth = GetVehicleBodyHealth(currentVehicle)
+                        if not modifierDensity then
+                            modifierDensity = true
+                        end
+                        veloc = GetEntityVelocity(currentVehicle)
                     else
-                        if not seatbeltOn and not IsThisModelABike(currVehicle) then
-                            if math.random(math.ceil(lastFrameVehSpeed)) > 60 then
-                                if not harnessOn then
-                                    ejectFromVehicle()
-                                else
-                                    harnessHp -= 1
-                                    TriggerServerEvent('seatbelt:DoHarnessDamage', harnessHp, harnessData)
-                                end
+                        if lastVehicle then
+                            SetPedHelmet(playerPed, true)
+                            Wait(200)
+                            newvehicleBodyHealth = GetVehicleBodyHealth(lastVehicle)
+                            if not damagedone and newvehicleBodyHealth < currentvehicleBodyHealth then
+                                damagedone = true
+                                SetVehicleEngineOn(lastVehicle, false, true, true)
+                                Wait(1000)
                             end
-                        elseif (seatbeltOn or harnessOn) and not IsThisModelABike(currVehicle) then
-                            if lastFrameVehSpeed > 120 then
-                                if math.random(math.ceil(lastFrameVehSpeed)) > 200 then
-                                    if not harnessOn then
-                                        ejectFromVehicle()
-                                    else
-                                        harnessHp -= 1
-                                        TriggerServerEvent('seatbelt:DoHarnessDamage', harnessHp, harnessData)
-                                    end
-                                end
-                            end
+                            lastVehicle = nil
                         end
+                        lastFrameVehiclespeed2 = 0
+                        lastFrameVehiclespeed = 0
+                        newvehicleBodyHealth = 0
+                        currentvehicleBodyHealth = 0
+                        frameBodyChange = 0
+                        Wait(2000)
+                        break
                     end
-                    damageDone = true
-                    SetVehicleEngineOn(currVehicle, false, true, true)
-                end
-                if currVehBodyHealth < 350.0 and not damageDone then
-                    damageDone = true
-                    SetVehicleEngineOn(currVehicle, false, true, true)
-                    Wait(1000)
-                end
-            end
-            if lastFrameVehSpeed < 100 then
-                Wait(100)
-                tick = 0
-            end
-            frameBodyChange = newVehBodyHealth - currVehBodyHealth
-            if tick > 0 then
-                tick -= 1
-                if tick == 1 then
-                    lastFrameVehSpeed = GetEntitySpeed(currVehicle) * 3.6
-                end
-            else
-                if damageDone then
-                    damageDone = false
-                    frameBodyChange = 0
-                    lastFrameVehSpeed = GetEntitySpeed(currVehicle) * 3.6
-                end
-                lastFrameVehSpeed2 = GetEntitySpeed(currVehicle) * 3.6
-                if lastFrameVehSpeed2 > lastFrameVehSpeed then
-                    lastFrameVehSpeed = GetEntitySpeed(currVehicle) * 3.6
-                end
-                if lastFrameVehSpeed2 < lastFrameVehSpeed then
-                    tick = 25
-                end
-
-            end
-            if tick < 0 then
-                tick = 0
-            end
-            newVehBodyHealth = GetVehicleBodyHealth(currVehicle)
-            if not modifierDensity then
-                modifierDensity = true
-            end
-            veloc = GetEntityVelocity(currVehicle)
-        else
-            if lastVeh then
-                SetPedHelmet(ped, true)
-                Wait(200)
-                newVehBodyHealth = GetVehicleBodyHealth(lastVeh)
-                if not damageDone and newVehBodyHealth < currVehBodyHealth then
-                    damageDone = true
-                    SetVehicleEngineOn(lastVeh, false, true, true)
-                    Wait(1000)
-                end
-                lastVeh = nil
-            end
-            lastFrameVehSpeed2 = 0
-            lastFrameVehSpeed = 0
-            newVehBodyHealth = 0
-            currVehBodyHealth = 0
-            frameBodyChange = 0
-            Wait(2000)
-            break
-        end
-    end
+                            end
+		else
+			if bool == true then
+				bool = false
+			end
+		end
+	end
 end)
 
 -- Events
