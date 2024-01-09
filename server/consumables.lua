@@ -44,11 +44,11 @@ local function createItem(name, type)
 end
 ----------- / Drug
 
-QBCore.Functions.CreateUseableItem('joint', function(source, item)
+--[[QBCore.Functions.CreateUseableItem('joint', function(source, item)
     local Player = QBCore.Functions.GetPlayer(source)
     if not Player.Functions.RemoveItem(item.name, 1, item.slot) then return end
     TriggerClientEvent('consumables:client:UseJoint', source)
-end)
+end)]]
 
 QBCore.Functions.CreateUseableItem('cokebaggy', function(source)
     TriggerClientEvent('consumables:client:Cokebaggy', source)
@@ -107,6 +107,14 @@ RegisterNetEvent('qb-smallpenis:server:AddParachute', function()
     local Player = QBCore.Functions.GetPlayer(source)
     if not Player then return end
     Player.Functions.AddItem('parachute', 1)
+end)
+
+QBCore.Functions.CreateUseableItem("taserammo", function(source, item)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(source)
+    if Player.Functions.RemoveItem(item.name, 1, item.slot) then
+       TriggerClientEvent("FillTaser", source)
+    end
 end)
 
 ----------- / Firework
@@ -296,4 +304,4 @@ local function addCustom(itemName, data)
     end
 end
 
-exports('AddCustom', addCustom)
+exports('AddCustom', AddCustom)
