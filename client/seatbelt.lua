@@ -5,50 +5,50 @@ local harnessHp = Config.HarnessUses
 local handbrake = 0
 local sleep = 0
 local harnessData = {}
-local newVehBodyHealth = 0
-local currVehBodyHealth = 0
+local newvehicleBodyHealth = 0
+local currentvehicleBodyHealth = 0
 local frameBodyChange = 0
-local lastFrameVehSpeed = 0
-local lastFrameVehSpeed2 = 0
-local thisFrameVehSpeed = 0
+local lastFrameVehiclespeed = 0
+local lastFrameVehiclespeed2 = 0
+local thisFrameVehicleSpeed = 0
 local tick = 0
-local damageDone = false
+local damagedone = false
 local modifierDensity = true
-local lastVeh = nil
+local lastVehicle = nil
 local veloc
 
 -- Functions
 
-local function ejectFromVehicle()
+local function EjectFromVehicle()
     local ped = PlayerPedId()
-    local veh = GetVehiclePedIsIn(ped, false)
+    local veh = GetVehiclePedIsIn(ped,false)
     local coords = GetOffsetFromEntityInWorldCoords(veh, 1.0, 0.0, 1.0)
     SetEntityCoords(ped, coords.x, coords.y, coords.z)
     Wait(1)
     SetPedToRagdoll(ped, 5511, 5511, 0, 0, 0, 0)
-    SetEntityVelocity(ped, veloc.x * 4, veloc.y * 4, veloc.z * 4)
-    local ejectSpeed = math.ceil(GetEntitySpeed(ped) * 8)
-    if GetEntityHealth(ped) - ejectSpeed > 0 then
-        SetEntityHealth(ped, GetEntityHealth(ped) - ejectSpeed)
+    SetEntityVelocity(ped, veloc.x*4,veloc.y*4,veloc.z*4)
+    local ejectspeed = math.ceil(GetEntitySpeed(ped) * 8)
+    if GetEntityHealth(ped) - ejectspeed > 0 then
+        SetEntityHealth(ped, GetEntityHealth(ped) - ejectspeed)
     elseif GetEntityHealth(ped) ~= 0 then
         SetEntityHealth(ped, 0)
     end
 end
 
-local function toggleSeatbelt()
+local function ToggleSeatbelt()
     seatbeltOn = not seatbeltOn
     SeatBeltLoop()
     TriggerEvent("seatbelt:client:ToggleSeatbelt")
     TriggerServerEvent("InteractSound_SV:PlayWithinDistance", 5.0, seatbeltOn and "carbuckle" or "carunbuckle", 0.25)
 end
 
-local function toggleHarness()
+local function ToggleHarness()
     harnessOn = not harnessOn
     if not harnessOn then return end
-    toggleSeatbelt()
+    ToggleSeatbelt()
 end
 
-local function resetHandBrake()
+local function ResetHandBrake()
     if handbrake <= 0 then return end
     handbrake -= 1
 end
@@ -75,13 +75,12 @@ end
 
 -- Export
 
----Checks whether you have the harness on or not
----@return boolean 
-local function hasHarness()
+function HasHarness()
     return harnessOn
 end
 
-exports("HasHarness", hasHarness)
+exports("HasHarness", HasHarness)
+
 
 -- Ejection Logic
 
@@ -90,12 +89,12 @@ Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(0)					-- mandatory wait
 		local ped = GetPlayerPed(-1)	-- get local ped
-
+		
 		if IsPedInAnyVehicle(ped, false) then
 			local veh = GetVehiclePedIsIn(ped, false)
 			if bool == false then
 				bool = true
-
+			
                 local playerPed = PlayerPedId()
                 while IsPedInAnyVehicle(playerPed, false) do
                     Wait(0)
@@ -113,9 +112,8 @@ Citizen.CreateThread(function()
                             else
                                 handbrake = 100
                             end
-
-                             end
-
+                        end
+            
                         thisFrameVehicleSpeed = GetEntitySpeed(currentVehicle) * 3.6
                         currentvehicleBodyHealth = GetVehicleBodyHealth(currentVehicle)
                         if currentvehicleBodyHealth == 1000 and frameBodyChange ~= 0 then
@@ -177,7 +175,7 @@ Citizen.CreateThread(function()
                                 Wait(1000)
                             end
                         end
-                            if lastFrameVehiclespeed < 100 then
+                        if lastFrameVehiclespeed < 100 then
                             Wait(100)
                             tick = 0
                         end
@@ -186,6 +184,7 @@ Citizen.CreateThread(function()
                             tick -= 1
                             if tick == 1 then
                                 lastFrameVehiclespeed = GetEntitySpeed(currentVehicle) * 3.6
+                            end
                         else
                             if damagedone then
                                 damagedone = false
@@ -199,7 +198,7 @@ Citizen.CreateThread(function()
                             if lastFrameVehiclespeed2 < lastFrameVehiclespeed then
                                 tick = 25
                             end
-
+            
                         end
                         if tick < 0 then
                             tick = 0
@@ -229,7 +228,9 @@ Citizen.CreateThread(function()
                         Wait(2000)
                         break
                     end
-                            end
+                end
+
+			end
 		else
 			if bool == true then
 				bool = false
@@ -238,13 +239,14 @@ Citizen.CreateThread(function()
 	end
 end)
 
+
 -- Events
 
 RegisterNetEvent('seatbelt:client:UseHarness', function(ItemData) -- On Item Use (registered server side)
     local ped = PlayerPedId()
-    local inVeh = IsPedInAnyVehicle(ped, false)
+    local inveh = IsPedInAnyVehicle(ped, false)
     local class = GetVehicleClass(GetVehiclePedIsUsing(ped))
-    if inVeh and class ~= 8 and class ~= 13 and class ~= 14 then
+    if inveh and class ~= 8 and class ~= 13 and class ~= 14 then
         if not harnessOn then
             LocalPlayer.state:set("inv_busy", true, true)
             QBCore.Functions.Progressbar("harness_equip", Lang:t('seatbelt.use_harness_progress'), 5000, false, true, {
@@ -254,7 +256,7 @@ RegisterNetEvent('seatbelt:client:UseHarness', function(ItemData) -- On Item Use
                 disableCombat = true,
             }, {}, {}, {}, function()
                 LocalPlayer.state:set("inv_busy", false, true)
-                toggleHarness()
+                ToggleHarness()
                 TriggerServerEvent('equip:harness', ItemData)
             end)
             harnessHp = ItemData.info.uses
@@ -269,7 +271,7 @@ RegisterNetEvent('seatbelt:client:UseHarness', function(ItemData) -- On Item Use
                 disableCombat = true,
             }, {}, {}, {}, function()
                 LocalPlayer.state:set("inv_busy", false, true)
-                toggleHarness()
+                ToggleHarness()
             end)
         end
     else
@@ -283,7 +285,7 @@ RegisterCommand('toggleseatbelt', function()
     if not IsPedInAnyVehicle(PlayerPedId(), false) or IsPauseMenuActive() then return end
     local class = GetVehicleClass(GetVehiclePedIsUsing(PlayerPedId()))
     if class == 8 or class == 13 or class == 14 then return end
-    toggleSeatbelt()
+    ToggleSeatbelt()
 end, false)
 
 RegisterKeyMapping('toggleseatbelt', 'Toggle Seatbelt', 'keyboard', 'B')
