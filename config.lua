@@ -119,7 +119,8 @@ Config.Consumables = {
         ["cooked_sausage"] = math.random(35, 54),
         ["cooked_pork"] = math.random(35, 54),
         ["cooked_ham"] = math.random(35, 54),
-        },
+
+    },
     drink = { -- default drink items
         ["water_bottle"] = math.random(15, 34),
         ["kurkakola"] = math.random(25, 44),
@@ -131,7 +132,7 @@ Config.Consumables = {
     
         -- Simple-farming
         ["apple_juice"] = math.random(25, 45),
-        ["grapejuice"] = math.random(25, 45),
+        --["grapejuice"] = math.random(25, 45),
         ["hotsauce"] = math.random(10, 15),
     },
     alcohol = { -- default alcohol items
@@ -139,32 +140,34 @@ Config.Consumables = {
         ["whiskey"] = math.random(25, 30),
         ["vodka"] = math.random(30, 40),
     },
+    --[[
     custom = { -- put any custom items here
-        -- ['newitem'] = {
-        --     progress = {
-        --         label = 'Using Item...',
-        --         time = 5000
-        --     },
-        --     animation = {
-        --         animDict = 'amb@prop_human_bbq@male@base',
-        --         anim = 'base',
-        --         flags = 8,
-        --     },
-        --     prop = {
-        --         model = false,
-        --         bone = false,
-        --         coords = false, -- vector 3 format
-        --         rotation = false, -- vector 3 format
-        --     },
-        --     replenish = {'''
-        --         type = 'Hunger', -- replenish type 'Hunger'/'Thirst' / false
-        --         replenish = math.random(20, 40),
-        --         isAlcohol = false, -- if you want it to add alcohol count
-        --         event = false, -- 'eventname' if you want it to trigger an outside event on use useful for drugs
-        --         server = false -- if the event above is a server event
-        --     }
-        -- }
+         ['newitem'] = {
+             progress = {
+                 label = 'Using Item...',
+                 time = 5000
+             },
+             animation = {
+                 animDict = 'amb@prop_human_bbq@male@base',
+                 anim = 'base',
+                 flags = 8,
+             },
+             prop = {
+                 model = false,
+                 bone = false,
+                 coords = false, -- vector 3 format
+                 rotation = false, -- vector 3 format
+             },
+             replenish = {'''
+                 type = 'Hunger', -- replenish type 'Hunger'/'Thirst' / false
+                 replenish = math.random(20, 40),
+                 isAlcohol = false, -- if you want it to add alcohol count
+                 event = false, -- 'eventname' if you want it to trigger an outside event on use useful for drugs
+                 server = false -- if the event above is a server event
+             }
+         }
     }
+    --]]
 }
 
 Config.Fireworks = {
