@@ -140,8 +140,8 @@ Config.Consumables = {
         ["whiskey"] = math.random(25, 30),
         ["vodka"] = math.random(30, 40),
     },
-    --[[
     custom = { -- put any custom items here
+        --[[
          ['newitem'] = {
              progress = {
                  label = 'Using Item...',
@@ -166,8 +166,8 @@ Config.Consumables = {
                  server = false -- if the event above is a server event
              }
          }
+        --]]
     }
-    --]]
 }
 
 Config.Fireworks = {
